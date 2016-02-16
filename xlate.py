@@ -44,8 +44,6 @@ def ashexdecode(s):
 
 def ashexencode(s):
     ret = '\\x'.join([hex(ord(e))[2:].zfill(2) for e in s])
-    if not OPT_NO_OUTPUT_SPACE:
-        raise EncodeException('Option %s is required with antislash-hex encoding' % OPT_NO_OUTPUT_SPACE)
 
     return '' if ret=='' else '\\x'+ret
 
