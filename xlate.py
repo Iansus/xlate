@@ -29,7 +29,6 @@ def hexdecode(s):
     if not OPT_NO_INPUT_SPACE:
         s = s.replace(' ','')
 
-    print s
     return s.decode('hex')
 
 def hexencode(s):
@@ -64,9 +63,27 @@ def bindecode(s):
 
     return ''.join([chr(int(s[i:i+8], 2)) for i in range(0, len(s), 8)])
 
+def bin7decode(s):
+    if not OPT_NO_INPUT_SPACE:
+        s = s.replace(' ','')
+
+    return ''.join([chr(int(s[i:i+7], 2)) for i in range(0, len(s), 7)])
+
 def binencode(s):
     j = '' if OPT_NO_OUTPUT_SPACE else ' '
     return j.join([bin(ord(s[i]))[2:].zfill(8) for i in range(0, len(s))])
+
+def revhex64(s):
+    j = '' if OPT_NO_OUTPUT_SPACE else ' '
+    sw = s+'\x00'
+    return j.join(['0x'+s[i:i+8][::-1].encode('hex') for i in range(0, len(s), 8)])
+
+
+def revhex(s):
+    j = '' if OPT_NO_OUTPUT_SPACE else ' '
+    sw = s+'\x00'
+    return j.join(['0x'+s[i:i+4][::-1].encode('hex') for i in range(0, len(s), 4)])
+
 
 
 
@@ -104,7 +121,9 @@ INPUT_FORMATS = [
         (['antislash-hex'], ashexdecode, ashexencode),
         (['dec'], decdecode, decencode),
         (['bin'], bindecode, binencode),
+        (['bin7'], bin7decode, None),
         ]
+
 
 ONE_WAY_FUNCS = [
         (['md5'], None, md5),
@@ -113,6 +132,8 @@ ONE_WAY_FUNCS = [
         (['sha256'], None, sha256),
         (['sha384'], None, sha384),
         (['sha512'], None, sha512),
+        (['revhex64'], None, revhex64),
+        (['revhex'], None, revhex),
         ]
 
 OUTPUT_FORMATS = INPUT_FORMATS + ONE_WAY_FUNCS
